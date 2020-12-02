@@ -19,20 +19,18 @@ Master branch contains **Selenium 3** samples, for **Selenium 4 - W3C protocol**
 ## Running your tests
 
 - To run a single test, run `mvn verify -P single`
-- To run local tests, run `mvn verify -P local`
 - To run parallel tests, run `mvn verify -P parallel`
-
-Understand how many parallel sessions you need by using our [Parallel Test Calculator](https://www.browserstack.com/automate/parallel-calculator?ref=github)
 
 ## Notes
 
-- You can view your test results on the [BrowserStack Automate dashboard](https://www.browserstack.com/automate)
-- To test on a different set of browsers, check out our [platform configurator](https://www.browserstack.com/automate/java#setting-os-and-browser)
+- You can view your test results on the [BrowserStack App Automate dashboard](https://www.browserstack.com/app-automate)
+- To test on a different set of browsers, check out our [platform configurator](https://www.browserstack.com/app-automate/java#setting-os-and-browser)
 - You can export the environment variables for the Username and Access Key of your BrowserStack account
 
-  ```
+  ```sh
   export BROWSERSTACK_USERNAME=<browserstack-username> &&
-  export BROWSERSTACK_ACCESS_KEY=<browserstack-access-key>
+  export BROWSERSTACK_ACCESS_KEY=<browserstack-access-key> &&
+  export BROWSERSTACK_APP_ID=<app_url or custom_id>
   ```
 
 ## Additional Resources
