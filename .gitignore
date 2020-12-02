@@ -64,3 +64,9 @@ nb-configuration.xml
 ## BROWSERSTACK
 ##########################
 local.log
+
+##########################
+## VSCode
+##########################
+.classpath
+.factorypath

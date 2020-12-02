@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.browserstack</groupId>
@@ -207,35 +207,14 @@
                         <version>${maven.failsafe-plugin.version}</version>
                         <configuration>
                             <includes>
-                                <include>com/browserstack/cucumber/SingleTest.java</include>
+                                <include>com/browserstack/cucumber/Test.java</include>
                             </includes>
                             <reuseForks>true</reuseForks>
                             <argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>
                             <systemPropertyVariables>
                                 <environment>single</environment>
+                                <!--suppress UnresolvedMavenProperty -->
                                 <taskID>MY_TEST_SCHEMA_${surefire.forkNumber}</taskID>
-                            </systemPropertyVariables>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>local</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <version>${maven.failsafe-plugin.version}</version>
-                        <configuration>
-                            <includes>
-                                <include>com/browserstack/cucumber/LocalTest.java</include>
-                            </includes>
-                            <reuseForks>true</reuseForks>
-                            <argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>
-                            <systemPropertyVariables>
-                                <environment>local</environment>
                             </systemPropertyVariables>
                         </configuration>
                     </plugin>
@@ -252,14 +231,16 @@
                         <version>${maven.failsafe-plugin.version}</version>
                         <configuration>
                             <includes>
-                                <include>com/browserstack/cucumber/Parallel*.java</include>
+                                <include>com/browserstack/cucumber/Test*.java</include>
                             </includes>
                             <parallel>classes</parallel>
-                            <threadCount>4</threadCount>
-                            <forkCount>4</forkCount>
-                            <reuseForks>true</reuseForks>
+                            <!-- specify no of parallels here -->
+                            <threadCount>5</threadCount>
+                            <forkCount>5</forkCount>
+                            <reuseForks>false</reuseForks>
                             <argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>
                             <systemPropertyVariables>
+                                <!--suppress UnresolvedMavenProperty -->
                                 <environment>parallel_${surefire.forkNumber}</environment>
                             </systemPropertyVariables>
                         </configuration>

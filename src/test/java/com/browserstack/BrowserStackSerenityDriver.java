@@ -1,19 +1,22 @@
 package com.browserstack;
 
-import java.net.URL;
-import java.util.Iterator;
-
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
-
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.AndroidElement;
+import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.ios.IOSElement;
 import net.thucydides.core.util.EnvironmentVariables;
 import net.thucydides.core.util.SystemEnvironmentVariables;
 import net.thucydides.core.webdriver.DriverSource;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import io.appium.java_client.AppiumDriver;
+
+import java.net.URL;
+import java.util.Iterator;
 
 public class BrowserStackSerenityDriver implements DriverSource {
 
-    public WebDriver newDriver() {
+    public AppiumDriver newDriver() {
         EnvironmentVariables environmentVariables = SystemEnvironmentVariables.createEnvironmentVariables();
 
         String username = System.getenv("BROWSERSTACK_USERNAME");
@@ -37,7 +40,14 @@ public class BrowserStackSerenityDriver implements DriverSource {
                     || key.equals("browserstack.server")) {
                 continue;
             } else if (key.startsWith("bstack_")) {
-                capabilities.setCapability(key.replace("bstack_", ""), environmentVariables.getProperty(key));
+                if (key.contains("app")){
+                    String appId = System.getenv("BROWSERSTACK_APP_ID");
+                    if(appId == null){
+                        appId = environmentVariables.getProperty(key);
+                    }
+                    capabilities.setCapability(key.replace("bstack_", ""),appId);
+                } else
+                    capabilities.setCapability(key.replace("bstack_", ""), environmentVariables.getProperty(key));
                 if (key.equals("bstack_browserstack.local")
                         && environmentVariables.getProperty(key).equalsIgnoreCase("true")) {
                     System.setProperty("browserstack.local", "true");
@@ -51,12 +61,21 @@ public class BrowserStackSerenityDriver implements DriverSource {
                 }
             }
         }
-
+        System.out.println(capabilities.asMap());
         try {
-            return new RemoteWebDriver(new URL("https://" + username + ":" + accessKey + "@"
-                    + environmentVariables.getProperty("browserstack.server") + "/wd/hub"), capabilities);
+            if(capabilities.getCapability("device").toString().contains("iP")){
+                IOSDriver driver = new IOSDriver<IOSElement>(new URL("https://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub"), capabilities);
+                System.out.println(driver);
+                return driver;
+            }
+            else{
+                AndroidDriver driver = new AndroidDriver<AndroidElement>(new URL("https://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub"), capabilities);
+                System.out.println(driver);
+                return driver;
+            }
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("@@@\t"+e.getMessage() + "\n!!!\t" +e.getCause());
+//            System.out.println(e);
             return null;
         }
     }

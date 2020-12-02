@@ -6,6 +6,6 @@ import net.serenitybdd.cucumber.CucumberWithSerenity;
 import org.junit.runner.RunWith;
 
 @RunWith(CucumberWithSerenity.class)
-@CucumberOptions(features = "src/test/resources/features/single.feature")
-public class ParallelIETest extends BrowserStackSerenityTest {
+@CucumberOptions(features = "src/test/resources/features/single.feature",plugin = {"json:target/cucumber_json/cucumber.json"} )
+public class Test extends BrowserStackSerenityTest {
 }
